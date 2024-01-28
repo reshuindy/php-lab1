@@ -1,0 +1,1 @@
+INSERT INTO `user` (`user_id`, `user_name_email`, `user_pwd`, `user_name`, `user_role_id`, `created_at`, `updated_at`, `user_status`, `user_dept_id`) VALUES (NULL, 'regupta@iu.edu', SHA1('Reshu@321'), 'Reshu Gupta', '1', current_timestamp(), '2024-01-28 02:56:18.000000', 'Y', '1');
