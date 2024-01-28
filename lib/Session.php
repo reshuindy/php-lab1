@@ -43,7 +43,7 @@ class Session{
   public static function destroy(){
     session_destroy();
     session_unset();
-    header('Location:login.php');
+    //header('Location:index.php');
   }
 
 
@@ -51,7 +51,7 @@ class Session{
   public static function CheckSession(){
     if (self::get('login') == FALSE) {
       session_destroy();
-      header('Location:login.php');
+      //header('Location:login.php');
     }
   }
 
@@ -62,11 +62,5 @@ class Session{
       header('Location:index.php');
     }
   }
-
-
-
-
-
-
 
 }
