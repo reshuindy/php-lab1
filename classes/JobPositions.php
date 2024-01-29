@@ -22,7 +22,7 @@ class JobPositions{
    }
 
 public function selectAllJobData(){
-  $sql = "SELECT * FROM job_position ORDER BY id DESC";
+  $sql = "SELECT job_position.*, department.dept_name FROM job_position left join department on job_position.dept_id=department.dept_id ORDER BY id DESC";
   $stmt = $this->db->pdo->prepare($sql);
   $stmt->execute();
   return $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -31,7 +31,7 @@ public function selectAllJobData(){
 // User login Autho Method
 public function userLoginAutho($email, $password){
     $password = SHA1($password);
-    $sql = "SELECT * FROM user WHERE user_name_email = :email and user_pwd = :password LIMIT 1";
+    $sql = "SELECT user.*,department.dept_name FROM user left join department on user_dept_id = department.dept_id WHERE user_name_email = :email and user_pwd = :password LIMIT 1";
     $stmt = $this->db->pdo->prepare($sql);
     $stmt->bindValue(':email', $email);
     $stmt->bindValue(':password', $password);
@@ -105,6 +105,9 @@ public function userLoginAutho($email, $password){
           Session::set('name', $logResult->user_name);
           Session::set('email', $logResult->user_name_email);
           Session::set('username', $logResult->user_name_email);
+
+          Session::set('department_id', $logResult->user_dept_id);
+          Session::set('department_name', $logResult->dept_name);
           Session::set('logMsg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Success !</strong> You are Logged In Successfully !</div>');
@@ -267,7 +270,7 @@ public function userLoginAutho($email, $password){
 
 
     // User Deactivated By Admin
-    public function userActiveByAdmin($active){
+    public function jobActivate($active){
       $sql = "UPDATE job_position SET
        status=:isActive, closed_at=:closedAt 
        WHERE id = :id";
@@ -299,9 +302,10 @@ public function userLoginAutho($email, $password){
     $hourly_rate = $data['hourly_rate'];
     $application_inst = $data['application_inst'];
     $contact_info = $data['contact_info'];
+    $department_id = $data['user_dept_id'];
 
 
-      $sql = "INSERT INTO job_position(title, description, skill_set, hourly_rate, application_inst, contact_info) VALUES(:title, :description, :skill_set, :hourly_rate, :application_inst, :contact_info)";
+      $sql = "INSERT INTO job_position(title, description, skill_set, hourly_rate, application_inst, contact_info, dept_id) VALUES(:title, :description, :skill_set, :hourly_rate, :application_inst, :contact_info, :department_id)";
       $stmt = $this->db->pdo->prepare($sql);
       $stmt->bindValue(':title', $title);
       $stmt->bindValue(':description', $description);
@@ -309,6 +313,8 @@ public function userLoginAutho($email, $password){
       $stmt->bindValue(':hourly_rate', $hourly_rate);
       $stmt->bindValue(':application_inst', $application_inst);
       $stmt->bindValue(':contact_info', $contact_info);
+      $stmt->bindValue(':department_id', $department_id);
+
       $result = $stmt->execute();
       if ($result) {
         $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">

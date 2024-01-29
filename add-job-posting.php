@@ -6,6 +6,7 @@ $sId =  Session::get('login');
 if ($sId === true) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['addUser'])) {
+  //print_r($_POST);
   $userAdd = $JobPositions->addNewJobPosting($_POST);
 }
 
@@ -20,12 +21,10 @@ if (isset($userAdd)) {
           <h3 class='text-center'>Add New Job Posting</h3>
         </div>
         <div class="cad-body">
-
-
-
             <div style="width:600px; margin:0px auto">
 
             <form class="" action="" method="post">
+                
                 <div class="form-group pt-3">
                   <label for="title">Job Title</label>
                   <textarea name="title"  class="form-control" maxlength="200" required></textarea>
@@ -50,39 +49,27 @@ if (isset($userAdd)) {
                   <label for="contact_info">Contact Info</label>
                   <textarea name="contact_info" class="form-control" required maxlength="200"> </textarea>
                 </div>
-                <!-- <div class="form-group">
-                  <div class="form-group">
-                    <label for="sel1">Select user Role</label>
-                    <select class="form-control" name="roleid" id="roleid">
-                      <option value="1">Admin</option>
-                      <option value="2">Editor</option>
-                      <option value="3">User only</option>
-
+                <div class="form-group">
+                  <label for="department">Department</label>
+                  <select class="form-control disabled" name="user_dept_id_disabled" id="user_dept_id_disabled" disabled>
+                      <option value="<?php echo Session::get('department_id'); ?>"><?php echo Session::get('department_name'); ?></option>
                     </select>
-                  </div>
-                </div> -->
+                  <input type="hidden" name="user_dept_id"  value="<?php echo Session::get('department_id'); ?>" />
+                </div>
+                
                 <div class="form-group">
                   <button type="submit" name="addUser" class="btn btn-success">Post</button>
                 </div>
-
-
             </form>
           </div>
-
-
         </div>
       </div>
 
 <?php
 }else{
-
   header('Location:index.php');
-
-
-
 }
  ?>
-
   <?php
   include 'inc/footer.php';
 
