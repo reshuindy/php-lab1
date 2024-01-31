@@ -1,7 +1,7 @@
 
 # Lab 1 Job Posting Portal
 <div class="script-details">
-  <h3>:: Portal Features ::</h3>
+  <h3>Portal Features ::</h3>
   <hr>
 <ul>
 
