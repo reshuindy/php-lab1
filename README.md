@@ -42,6 +42,8 @@
 <hr>
 <ul>
    <li>Portal URL: <a href='https://in-info-web4.informatics.iupui.edu/~regupta/job_posting/index.php' target="_blank">https://in-info-web4.informatics.iupui.edu/~regupta/job_posting/index.php</a></li>
+  <li>Faculty Username: *** </li>
+  <li>Faculty Passowrd: *** </li>
 </ul>
 </div>
 
