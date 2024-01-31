@@ -27,7 +27,7 @@
     <li>Setup Web Application/Source Code::
       <ul>
    <li>Install Any PHP version > 7 +</li>
-    <li>Copy source code files to public_html/ directory</li>    
+    <li>Copy all source code files to (public_html/) directory</li>    
     <li>Update (config/config.php) for database credentials</li>
       </ul></li>
   </ul>
@@ -41,7 +41,7 @@
 </ul>
 <hr>
 <ul>
-   <li>Portal: <a href='https://in-info-web4.informatics.iupui.edu/~regupta/job_posting/index.php' target="_blank">https://in-info-web4.informatics.iupui.edu/~regupta/job_posting/index.php</a></li>
+   <li>Portal URL: <a href='https://in-info-web4.informatics.iupui.edu/~regupta/job_posting/index.php' target="_blank">https://in-info-web4.informatics.iupui.edu/~regupta/job_posting/index.php</a></li>
 </ul>
 </div>
 
