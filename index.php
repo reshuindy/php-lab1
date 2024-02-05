@@ -58,7 +58,7 @@ if (isset($activeId)) {
                       <th  class="text-center">Department</th>
                       <th  class="text-center">Status</th>
                       <?php if (Session::get('id') == TRUE) { ?>
-                      <th  width='30' class="text-center">Action</th>
+                      <th  width='100' class="text-center">Action</th>
                       <?php } ?>
                     </tr>
                   </thead>
@@ -98,7 +98,9 @@ if (isset($activeId)) {
 
                         </td>
                         <?php if (Session::get('id') == TRUE) { ?>
-                        <td width="30">
+                        <td align="left">
+                        <a class="btn btn-primary
+                                btn-sm " href="edit-job-posting.php?id=<?php echo $value->id;?>">Edit</a>
                           <?php if($value->status == 'Open'){?>
                                <a onclick="return confirm('Are you sure To Close it ?')" class="btn btn-danger
                                 btn-sm " href="?active=<?php echo $value->id;?>">Close</a>

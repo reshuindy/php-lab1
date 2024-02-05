@@ -22,11 +22,100 @@ class JobPositions{
    }
 
 public function selectAllJobData(){
-  $sql = "SELECT job_position.*, department.dept_name FROM job_position left join department on job_position.dept_id=department.dept_id ORDER BY id DESC";
+  $where = " ";
+  $sql = "SELECT job_position.*, department.dept_name FROM job_position left join department on job_position.dept_id=department.dept_id ";
+  
+  $orderby = " ORDER BY id DESC";
+  
+  if(Session::get('department_id'))
+  $where = " WHERE job_position.dept_id=".Session::get('department_id');
+
+  $stmt = $this->db->pdo->prepare($sql.$where.$orderby);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+public function retrieveDepartments(){
+  $sql = "SELECT * FROM department where dept_status='Y' ORDER BY dept_name";
   $stmt = $this->db->pdo->prepare($sql);
   $stmt->execute();
   return $stmt->fetchAll(PDO::FETCH_OBJ);
 }
+public function userRegistration($data){
+  $user_name = $data['user_name'];
+  $user_name_email = $data['user_name_email'];
+  $password = $data['password'];
+  $user_department_id =  $data['user_department_id'];
+
+  $checkEmail = $this->checkExistEmail($user_name_email);
+
+  if ($user_name == "" || $user_name_email == "" || $password == "" || $user_department_id == "") {
+    $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Please, User Registration fields must not be Empty !</div>';
+      return $msg;
+  }elseif (strlen($user_name) < 3) {
+    $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong>  Name is too short, at least 3 Characters !</div>';
+      return $msg;
+  }elseif(strlen($password) < 5) {
+    $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Password at least 6 Characters !</div>';
+      return $msg;
+  }elseif (filter_var($user_name_email, FILTER_VALIDATE_EMAIL === FALSE)) {
+    $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Invalid email address !</div>';
+      return $msg;
+  }elseif ($checkEmail == TRUE) {
+    $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Email already Exists, please try another Email !</div>';
+      return $msg;
+  }else{
+
+    $sql = "INSERT INTO user(user_name, user_name_email, user_pwd, user_role_id, user_dept_id, user_status) VALUES(:user_name, :user_name_email, :password, :roleid, :user_department_id, :user_status)";
+    $stmt = $this->db->pdo->prepare($sql);
+    $stmt->bindValue(':user_name', $user_name);
+    $stmt->bindValue(':user_name_email', $user_name_email);
+    $stmt->bindValue(':password', SHA1($password));
+    $stmt->bindValue(':roleid', 1);
+    $stmt->bindValue(':user_department_id', $user_department_id);
+    $stmt->bindValue(':user_status', 'Y');
+    $result = $stmt->execute();
+    if ($result) {
+      $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Success !</strong> Wow, you have Registered Successfully !</div>';
+        return $msg;
+    }else{
+      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+<strong>Error !</strong> Something went Wrong !</div>';
+        return $msg;
+    }
+
+
+
+  }
+
+
+
+
+
+}
+public function retrieveJobPosting($id){
+  $sql = "SELECT job_position.*, department.dept_name FROM job_position left join department on job_position.dept_id=department.dept_id ";
+  
+  if(Session::get('department_id'))
+  $where = " WHERE job_position.id=".$id;
+
+  $stmt = $this->db->pdo->prepare($sql.$where);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
 
 // User login Autho Method
 public function userLoginAutho($email, $password){
@@ -332,7 +421,49 @@ public function userLoginAutho($email, $password){
 
     }
 
-
+    public function editNewJobPosting($data){
+      $title = $data['title'];
+      $description = $data['description'];
+      $skill_set = $data['skill_set'];
+      $hourly_rate = $data['hourly_rate'];
+      $application_inst = $data['application_inst'];
+      $contact_info = $data['contact_info'];
+      $department_id = $data['user_dept_id'];
+      $id = $data['id'];
+  
+      $sql = "UPDATE job_position SET 
+       title=:title, 
+       description=:description, 
+       skill_set=:skill_set, 
+       hourly_rate=:hourly_rate, 
+       application_inst=:application_inst, 
+       contact_info=:contact_info 
+       WHERE id=:id";
+        $stmt = $this->db->pdo->prepare($sql);
+        $stmt->bindValue(':title', $title);
+        $stmt->bindValue(':description', $description);
+        $stmt->bindValue(':skill_set', $skill_set);
+        $stmt->bindValue(':hourly_rate', $hourly_rate);
+        $stmt->bindValue(':application_inst', $application_inst);
+        $stmt->bindValue(':contact_info', $contact_info);
+        $stmt->bindValue(':id', $id);
+  
+        $result = $stmt->execute();
+        if ($result) {
+          $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success !</strong> Job Updated Successfully !</div>';
+            return $msg;
+        }else{
+          $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error !</strong> Something went Wrong !</div>';
+            return $msg;
+        }
+  
+  
+  
+      }
 
 
 

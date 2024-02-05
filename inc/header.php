@@ -29,6 +29,7 @@ $JobPositions = new JobPositions();
     <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="assets/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
 <?php
@@ -41,7 +42,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
   Session::destroy();
 }
  ?>
-    <div class="container">
+    <div class="container-fluid">
       <nav class="navbar navbar-expand-md navbar-dark bg-dark card-header">
         <a class="navbar-brand" href="index.php"><i class="fas fa-university mr-2"></i>Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,6 +76,18 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
                     			 ?>">
                 <a class="nav-link" href="login.php"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+              </li>
+              <li class="nav-item
+                <?php
+
+                    				$path = $_SERVER['SCRIPT_FILENAME'];
+                    				$current = basename($path, '.php');
+                    				if ($current == 'signup') {
+                    					echo " active ";
+                    				}
+
+                    			 ?>">
+                <a class="nav-link" href="signup.php"><i class="fas fa-sign-in-alt mr-2"></i>Signup</a>
               </li>
 
           <?php } ?>
