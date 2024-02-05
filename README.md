@@ -6,11 +6,14 @@
 <ul>
 
  <li>Job Listing for Potential Employees</li>
+ <li>* Faculty/Staff Signup</li>
  <li>Faculty/Staff Login and Logout</li>
  <li>Job Posting by Faculty/Staff in their own department</li>
  <li>Job List with option to close Job vacancy</li> 
+ 
+ <li>*Edit Job Posting by Faculty/Staff in their own department</li>
 </ul>
-
+* - New functionalities
 
 </div>
 
